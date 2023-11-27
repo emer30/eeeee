@@ -1,0 +1,780 @@
+
+postgres=# CREATE DATABASE organi_guberna;
+CREATE DATABASE
+postgres=# \c organi_guberna;
+Ahora está conectado a la base de datos «organi_guberna» con el usuario «postgres».
+organi_guberna=# CREATE TABLE municipio(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE provincia(
+organi_guberna(# id_provincia SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200),
+organi_guberna(# id_municipio INTEGER,
+organi_guberna(# FOREIGN KEY(id_municipio) REFERENCES municipio(id);
+organi_guberna(# ;
+organi_guberna(# );
+ERROR:  error de sintaxis en o cerca de «;»
+LÍNEA 5: FOREIGN KEY(id_municipio) REFERENCES municipio(id);
+                                                           ^
+organi_guberna=# CREATE TABLE provincia(
+organi_guberna(# id_provincia SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200),
+organi_guberna(# id_municipio INTEGER,
+organi_guberna(# FOREIGN KEY(id_municipio) REFERENCES municipio(id)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# \d provincia;
+                                             Tabla ½public.provincia╗
+   Columna    |          Tipo          | Ordenamiento | Nulable  |
+         Por omisi¾n
+--------------+------------------------+--------------+----------+-------------------------------------------------
+ id_provincia | integer                |              | not null | nextval('provincia_id_provincia_seq'::regclass)
+ nombre       | character varying(200) |              |          |
+ id_municipio | integer                |              |          |
+═ndices:
+    "provincia_pkey" PRIMARY KEY, btree (id_provincia)
+Restricciones de llave forßnea:
+    "provincia_id_municipio_fkey" FOREIGN KEY (id_municipio) REFERENCES municipio(id)
+
+
+organi_guberna=# SELECT *FROM provincia;
+ id_provincia | nombre | id_municipio
+--------------+--------+--------------
+(0 filas)
+
+
+organi_guberna=# CREATE TABLE signo(
+organi_guberna(# id_signo SERIAL PRIMARY KEY,
+organi_guberna(# signo CARACTER
+organi_guberna(# );
+ERROR:  no existe el tipo «caracter»
+LÍNEA 3: signo CARACTER
+               ^
+organi_guberna=# CREATE TABLE signo(
+organi_guberna(# id_signo SERIAL PRIMARY KEY,
+organi_guberna(# signo VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE barrio(
+organi_guberna(# id_barrio SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE numero(
+organi_guberna(# id_numero SERIAL PRIMARY KEY,
+organi_guberna(# numero INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE direccion(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200),
+organi_guberna(# id_numero INTEGER,
+organi_guberna(# id_signo INTEGER,
+organi_guberna(# id_barrio INTEGER,
+organi_guberna(# FOREIGN KEY(id_numero) REFERENCES numero(id_numero),
+organi_guberna(# FOREIGN KEY(id_signo) REFERENCES signo(id_signo),
+organi_guberna(# FOREIGN KEY(id_barrio) REFERENCES barrio(id_barrio)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# \d direccion;
+                                       Tabla ½public.direccion╗
+  Columna  |          Tipo          | Ordenamiento | Nulable  |
+ Por omisi¾n
+-----------+------------------------+--------------+----------+---------------------------------------
+ id        | integer                |              | not null | nextval('direccion_id_seq'::regclass)
+ nombre    | character varying(200) |              |          |
+ id_numero | integer                |              |          |
+ id_signo  | integer                |              |          |
+ id_barrio | integer                |              |          |
+═ndices:
+    "direccion_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "direccion_id_barrio_fkey" FOREIGN KEY (id_barrio) REFERENCES barrio(id_barrio)
+    "direccion_id_numero_fkey" FOREIGN KEY (id_numero) REFERENCES numero(id_numero)
+    "direccion_id_signo_fkey" FOREIGN KEY (id_signo) REFERENCES signo(id_signo)
+
+
+organi_guberna=# CREATE TABLE socio(
+organi_guberna(# id_socio SERIAL PRIMARY KEY,
+organi_guberna(# identificacion INTEGER,
+organi_guberna(# nombre VARCHAR(200),
+organi_guberna(# fech_alt_asocia date,
+organi_guberna(# cuota_mensual DOUBLE PRECISION,
+organi_guberna(# aporte_anual DOUBLE PRECISION,
+organi_guberna(# id_provincia INTEGER,
+organi_guberna(# id_direccion INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE tipo_asociacion(
+organi_guberna(# id_tipo SERIAL PRIMARY KEY,
+organi_guberna(# nombre  VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE asociacion(
+organi_guberna(# id_asociacion SERIAL PRIMARY KEY,
+organi_guberna(# nit INTEGER,
+organi_guberna(# denominacion VARCHAR(200),
+organi_guberna(# id_direccion INTEGER,
+organi_guberna(# id_tipo_asociacion INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE provincia_asociacion(
+organi_guberna(# id_provincia INTEGER,
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# PRIMARY KEY (id_provincia,id_asociacion),
+organi_guberna(# FOREIGN KEY(id_provincia) REFERENCES (id_provincia)
+organi_guberna(# ;
+organi_guberna(# );
+ERROR:  error de sintaxis en o cerca de «(»
+LÍNEA 5: FOREIGN KEY(id_provincia) REFERENCES (id_provincia)
+                                              ^
+organi_guberna=# CREATE TABLE provincia_asociacion(
+organi_guberna(# id_provincia INTEGER,
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# PRIMARY KEY (id_provincia,id_asociacion),
+organi_guberna(# FOREIGN KEY(id_provincia) REFERENCES provincia (id_provincia),
+organi_guberna(# FOREIGN KEY(id_asociacion) REFERENCES asociacion(id_id_asociacion)
+organi_guberna(# );
+ERROR:  no existe la columna «id_id_asociacion» referida en la llave foráneaorgani_guberna=# CREATE TABLE provincia_asociacion(
+organi_guberna(# id_provincia INTEGER,
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# PRIMARY KEY (id_provincia,id_asociacion),
+organi_guberna(# FOREIGN KEY(id_provincia) REFERENCES provincia (id_provincia),
+organi_guberna(# FOREIGN KEY(id_asociacion) REFERENCES asociacion(id_asociacion)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# \d  provincia_asociacion;
+               Tabla ½public.provincia_asociacion╗
+    Columna    |  Tipo   | Ordenamiento | Nulable  | Por omisi¾n
+---------------+---------+--------------+----------+-------------
+ id_provincia  | integer |              | not null |
+ id_asociacion | integer |              | not null |
+═ndices:
+    "provincia_asociacion_pkey" PRIMARY KEY, btree (id_provincia, id_asociacion)
+Restricciones de llave forßnea:
+    "provincia_asociacion_id_asociacion_fkey" FOREIGN KEY (id_asociacion) REFERENCES asociacion(id_asociacion)
+    "provincia_asociacion_id_provincia_fkey" FOREIGN KEY (id_provincia) REFERENCES provincia(id_provincia)
+
+
+organi_guberna=# CREATE TABLE socio_asociacion(
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# id_socio INTEGER,
+organi_guberna(# PRIMARY KEY(id_asociacion, id_socio),
+organi_guberna(# FOREIGN KEY (id_asociacion) REFERENCES asociacion((id_asociacion),
+organi_guberna(# FOREIGN KEY (id_asociacion) REFERENCES asociacion();
+organi_guberna(# );
+organi_guberna(# );
+ERROR:  error de sintaxis en o cerca de «(»
+LÍNEA 5: FOREIGN KEY (id_asociacion) REFERENCES asociacion((id_asocia...
+                                                           ^
+organi_guberna=# CREATE TABLE socio_asociacion(
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# id_socio INTEGER,
+organi_guberna(# PRIMARY KEY(id_asociacion, id_socio),
+organi_guberna(# FOREIGN KEY (id_asociacion) REFERENCES asociacion(id_asociacion),
+organi_guberna(# FOREIGN KEY (id_socio) REFERENCES socio(id_socio)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE proyecto(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# identificacion INTEGER,
+organi_guberna(# objetivo VARCHAR(200),
+organi_guberna(# num_beneficiarios INTEGER,
+organi_guberna(# id_zona INTEGER,
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# subproyecto INTEGER,
+organi_guberna(# id_pais INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE pais(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE zona(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR (200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE trabajador(
+organi_guberna(# id_trabajador SERIAL PRIMARY KEY,
+organi_guberna(# identificacion INTEGER,
+organi_guberna(# nombre VARCHAR(200),
+organi_guberna(# fecha_ingreso DATE,
+organi_guberna(# id_tipo_trabajador INTEGER,
+organi_guberna(# id_asociacion INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE tipo_trabajador(
+organi_guberna(# id_tipo_trabajador SERIAL PRIMARY KEY,
+organi_guberna(# id_voluntario INTEGER,
+organi_guberna(# id_asalariado INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE voluntario(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# edad INTEGER,
+organi_guberna(# horas_ded_asocia INTEGER,
+organi_guberna(# id_profesion INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE asalariado(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# pago_seg_social DOUBLE PRECISION,
+organi_guberna(# descue_impuesto FLOAT,
+organi_guberna(# sueldo INTEGER,
+organi_guberna(# id_cargo INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE profesion(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# CREATE TABLE cargo(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# nombre VARCHAR(200)
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# \dt
+               Listado de relaciones
+ Esquema |        Nombre        | Tipo  |  Due±o
+---------+----------------------+-------+----------
+ public  | asalariado           | tabla | postgres
+ public  | asociacion           | tabla | postgres
+ public  | barrio               | tabla | postgres
+ public  | cargo                | tabla | postgres
+ public  | direccion            | tabla | postgres
+ public  | municipio            | tabla | postgres
+ public  | numero               | tabla | postgres
+ public  | pais                 | tabla | postgres
+ public  | profesion            | tabla | postgres
+ public  | provincia            | tabla | postgres
+ public  | provincia_asociacion | tabla | postgres
+ public  | proyecto             | tabla | postgres
+ public  | signo                | tabla | postgres
+ public  | socio                | tabla | postgres
+ public  | socio_asociacion     | tabla | postgres
+ public  | tipo_asociacion      | tabla | postgres
+ public  | tipo_trabajador      | tabla | postgres
+ public  | trabajador           | tabla | postgres
+ public  | voluntario           | tabla | postgres
+ public  | zona                 | tabla | postgres
+(20 filas)
+
+
+organi_guberna=# ALTER TABLE socio
+organi_guberna-# ADD CONSTRAINT id_provincia_fk1
+organi_guberna-# FOREIGN KEY (id_provincia)
+organi_guberna-# REFERENCES provincia (id_provincia)
+organi_guberna-# );
+ERROR:  error de sintaxis en o cerca de «)»
+LÍNEA 5: );
+         ^
+organi_guberna=# ALTER TABLE socio
+organi_guberna-# ADD CONSTRAINT id_provincia_fk1
+organi_guberna-# FOREIGN KEY (id_provincia)
+organi_guberna-# REFERENCES provincia (id_provincia);
+ALTER TABLE
+organi_guberna=# ALTER TABLE socio
+organi_guberna-# ADD CONSTRAINT id_fk2
+organi_guberna-# FOREIGN KEY (id_direccion)
+organi_guberna-# REFERENCES direccion(id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE asociacion
+organi_guberna-# ADD CONSTRAINT id_fk1
+organi_guberna-# FOREIGN KEY (id_direccion)
+organi_guberna-# REFERENCES direccion(id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE asociacion
+organi_guberna-# ADD CONSTRAINT id_tipo_asociacion_fk2
+organi_guberna-# FOREIGN KEY (id_asociacion)
+organi_guberna-# REFERENCES tipo_asociacion(id_tipo_asociacion);
+ERROR:  no existe la columna «id_tipo_asociacion» referida en la llave foránea
+organi_guberna=# ALTER TABLE asociacion
+organi_guberna-# ADD CONSTRAINT id_tipo_fk2
+organi_guberna-# FOREIGN KEY (id_tipo_asociacion)
+organi_guberna-# REFERENCES tipo_asociacion (id_tipo);
+ALTER TABLE
+organi_guberna=# ALETER TABLE
+organi_guberna-# );
+ERROR:  error de sintaxis en o cerca de «ALETER»
+LÍNEA 1: ALETER TABLE
+         ^
+organi_guberna=# ALTER TABLE proyecto
+organi_guberna-# ADD CONSTRAINT id_fk1
+organi_guberna-# FOREIGN KEY (id_zona)
+organi_guberna-# REFERENCES zona(id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE proyecto
+organi_guberna-# ADD CONSTRAINT id_fk2
+organi_guberna-# FOREIGN KEY (id_pais)
+organi_guberna-# REFERENCES pais(id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE proyecto
+organi_guberna-# ADD CONSTRAINT id_fk3
+organi_guberna-# FOREIGN KEY (id)
+organi_guberna-# REFERENCES proyecto(id);
+ALTER TABLE
+organi_guberna=# SELECT *FROM proyecto;
+ id | identificacion | objetivo | num_beneficiarios | id_zona | id_asociacion | subproyecto | id_pais
+----+----------------+----------+-------------------+---------+---------------+-------------+---------
+(0 filas)
+
+
+organi_guberna=# INSERT INTO proyecto(identificacion, objetivo,num_beneficiarios,id_zona,id_asociacion, subproyecto, id_pais)
+organi_guberna-# VALUES (1007342111,'jdjkdbdkjbkjdbvjksdjks',30,2,3,5,1);
+ERROR:  inserción o actualización en la tabla «proyecto» viola la llave foránea «id_fk1»
+DETALLE:  La llave (id_zona)=(2) no está presente en la tabla «zona».
+organi_guberna=# SELECT *FROM zona;
+ id | nombre
+----+--------
+(0 filas)
+
+
+organi_guberna=# INSERT INTO zona (nombre) VALUES('orinoquia');
+INSERT 0 1
+organi_guberna=# SELECT *FROM asociacion;
+ id_asociacion | nit | denominacion | id_direccion | id_tipo_asociacion
+---------------+-----+--------------+--------------+--------------------
+(0 filas)
+
+
+organi_guberna=# DROP TABLE proyecto;
+DROP TABLE
+organi_guberna=# CREATE TABLE proyecto(
+organi_guberna(# id SERIAL PRIMARY KEY,
+organi_guberna(# identificacion INTEGER,
+organi_guberna(# objetivo VARCHAR(200),
+organi_guberna(# num_beneficiarios INTEGER,
+organi_guberna(# id_zona INTEGER,
+organi_guberna(# id_asociacion INTEGER,
+organi_guberna(# subproyecto INTEGER,
+organi_guberna(# id_pais INTEGER
+organi_guberna(# );
+CREATE TABLE
+organi_guberna=# ALTER TABLE proyecto
+organi_guberna-# ADD CONSTRAINT id_fk3
+organi_guberna-# FOREIGN KEY (subproyecto)
+organi_guberna-# REFERENCES proyecto(id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE proyecto
+organi_guberna-# ADD CONSTRAINT id_asociacion_fk4
+organi_guberna-# FOREIGN KEY (id_asociacion)
+organi_guberna-# REFERENCES asociacion(id_asociacion);
+ALTER TABLE
+organi_guberna=# ALTER TABLE trabajador
+organi_guberna-# ADD CONSTRAINT id_tipo_trabajador_fk1
+organi_guberna-# FOREIGN KEY (id_tipo_trabajador)
+organi_guberna-# REFERENCES tipo_trabajador (id_tipo_trabajador);
+ALTER TABLE
+organi_guberna=# ALTER TABLE trabajador
+organi_guberna-# ADD CONSTRAINT id_asociacion_fk2
+organi_guberna-# FOREIGN KEY (id_asociacion)
+organi_guberna-# REFERENCES tipo_trabajador (id_asociacion);
+ERROR:  no existe la columna «id_asociacion» referida en la llave foránea
+organi_guberna=# ALTER TABLE trabajador
+organi_guberna-# ADD CONSTRAINT id_asociacion_fk2
+organi_guberna-# FOREIGN KEY (id_asociacion)
+organi_guberna-# REFERENCES asociacion (id_asociacion);
+ALTER TABLE
+organi_guberna=# ALTER TABLE voluntario
+organi_guberna-# ADD CONSTRAINT id_fk
+organi_guberna-# FOREIGN KEY (id_profesion)
+organi_guberna-# REFERENCES profesion (id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE voluntario
+organi_guberna-# ADD CONSTRAINT id_fk)
+organi_guberna-# ;
+ERROR:  error de sintaxis en o cerca de «)»
+LÍNEA 2: ADD CONSTRAINT id_fk)
+                             ^
+organi_guberna=# ALTER TABLE asalariado
+organi_guberna-# ADD CONSTRAINT id_fk
+organi_guberna-# FOREIGN KEY (id_cargo)
+organi_guberna-# REFERENCES cargo (id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE tipo_trabajador
+organi_guberna-# ADD CONSTRAINT id_fk1
+organi_guberna-# FOREIGN KEY (id_voluntario)
+organi_guberna-# REFERENCES voluntario (id);
+ALTER TABLE
+organi_guberna=# ALTER TABLE tipo_trabajador
+organi_guberna-# ADD CONSTRAINT id_fk2
+organi_guberna-# FOREIGN KEY (id_asalariado)
+organi_guberna-# REFERENCES asalariado (id);
+ALTER TABLE
+organi_guberna=# INSERT INTO profesion(nombre) VALUES(ingeniero);
+ERROR:  no existe la columna «ingeniero»
+LÍNEA 1: INSERT INTO profesion(nombre) VALUES(ingeniero);
+                                              ^
+organi_guberna=# INSERT INTO profesion(nombre) VALUES('ingeniero');
+INSERT 0 1
+organi_guberna=# INSERT INTO profesion(nombre) VALUES('arquitecto');
+INSERT 0 1
+organi_guberna=# INSERT INTO profesion(nombre) VALUES('docente');
+INSERT 0 1
+organi_guberna=# INSERT INTO profesion(nombre) VALUES('medico');
+INSERT 0 1
+organi_guberna=# INSERT INTO cargo(nombre) VALUES('consultor de estrategia');
+INSERT 0 1
+organi_guberna=# INSERT INTO cargo(nombre) VALUES('comprador');
+INSERT 0 1
+organi_guberna=# INSERT INTO cargo(nombre) VALUES('auditor');
+INSERT 0 1
+organi_guberna=# INSERT INTO cargo(nombre) VALUES('encargado de obra');
+INSERT 0 1
+organi_guberna=# INSERT INTO voluntario(edad,horas_ded_asocia,id_profesion) VALUES(20,140,2);
+INSERT 0 1
+organi_guberna=# SELET *FROM voluntario;
+ERROR:  error de sintaxis en o cerca de «SELET»
+LÍNEA 1: SELET *FROM voluntario;
+         ^
+organi_guberna=# SELEcT *FROM voluntario;
+ id | edad | horas_ded_asocia | id_profesion
+----+------+------------------+--------------
+  1 |   20 |              140 |            2
+(1 fila)
+
+
+organi_guberna=# INSERT INTO voluntario(edad,horas_ded_asocia,id_profesion) VALUES(35,100,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO voluntario(edad,horas_ded_asocia,id_profesion) VALUES(40,150,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO voluntario(edad,horas_ded_asocia,id_profesion) VALUES(39,267,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO asalariado(pago_seg_social,descue_impuesto,sueldo,id_cargo) VALUES(1000000,15,3500000,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO asalariado(pago_seg_social,descue_impuesto,sueldo,id_cargo) VALUES(500000,10,3550700,2);
+INSERT 0 1
+organi_guberna=# INSERT INTO asalariado(pago_seg_social,descue_impuesto,sueldo,id_cargo) VALUES(2000,5%,20000900,1);
+ERROR:  error de sintaxis en o cerca de «,»
+LÍNEA 1: ...al,descue_impuesto,sueldo,id_cargo) VALUES(2000,5%,20000900,...
+                                                              ^
+organi_guberna=# INSERT INTO asalariado(pago_seg_social,descue_impuesto,sueldo,id_cargo) VALUES(2000,5,20000900,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO asalariado(pago_seg_social,descue_impuesto,sueldo,id_cargo) VALUES(100000,8,1999999,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_trabajador (id_voluntario,id_asalariado) VALUES (2,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_trabajador (id_voluntario,id_asalariado) VALUES (3,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_trabajador (id_voluntario,id_asalariado) VALUES (4,2);
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_trabajador (id_voluntario,id_asalariado) VALUES (1,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO municipio(nombre) VALUES (garzon);
+ERROR:  no existe la columna «garzon»
+LÍNEA 1: INSERT INTO municipio(nombre) VALUES (garzon);
+                                               ^
+organi_guberna=# INSERT INTO municipio(nombre) VALUES ('garzon');
+INSERT 0 1
+organi_guberna=# INSERT INTO municipio(nombre) VALUES ('neiva');
+INSERT 0 1
+organi_guberna=# INSERT INTO municipio(nombre) VALUES ('aipe');
+INSERT 0 1
+organi_guberna=# INSERT INTO municipio(nombre) VALUES ('agrado');
+INSERT 0 1
+organi_guberna=# INSERT INTO numero(numero) VALUES (1)
+organi_guberna-# ;
+INSERT 0 1
+organi_guberna=# INSERT INTO numero(numero) VALUES (12);
+INSERT 0 1
+organi_guberna=# INSERT INTO numero(numero) VALUES (2);
+INSERT 0 1
+organi_guberna=# INSERT INTO numero(numero) VALUES (3);
+INSERT 0 1
+organi_guberna=# INSERT INTO numero(numero) VALUES (4);
+INSERT 0 1
+organi_guberna=# INSERT INTO numero(numero) VALUES (5);
+INSERT 0 1
+organi_guberna=# INSERT INTO signo(signo) VALUES (#);
+ERROR:  error de sintaxis en o cerca de «)»
+LÍNEA 1: INSERT INTO signo(signo) VALUES (#);
+                                           ^
+organi_guberna=# INSERT INTO signo(signo) VALUES ('#');
+INSERT 0 1
+organi_guberna=# INSERT INTO barrio(nombre) VALUES ('gualanday');
+INSERT 0 1
+organi_guberna=# INSERT INTO barrio(nombre) VALUES ('la gaitana');
+INSERT 0 1
+organi_guberna=# INSERT INTO barrio(nombre) VALUES ('puertas del sol');
+INSERT 0 1
+organi_guberna=# INSERT INTO barrio(nombre) VALUES ('los cambulos');
+INSERT 0 1
+organi_guberna=# INSERT INTO direccion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle',);
+ERROR:  error de sintaxis en o cerca de «)»
+LÍNEA 1: ...cion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle',);
+                                                                      ^
+organi_guberna=# DROP TABLE numero;
+ERROR:  no se puede eliminar tabla numero porque otros objetos dependen de él
+DETALLE:  restricción «direccion_id_numero_fkey» en tabla direccion depende de tabla numero
+SUGERENCIA:  Use DROP ... CASCADE para eliminar además los objetos dependientes.
+organi_guberna=# DROP TABLE direccion;
+ERROR:  no se puede eliminar tabla direccion porque otros objetos dependen de él
+DETALLE:  restricción «id_fk2» en tabla socio depende de tabla direccion
+restricción «id_fk1» en tabla asociacion depende de tabla direccion
+SUGERENCIA:  Use DROP ... CASCADE para eliminar además los objetos dependientes.
+organi_guberna=# INSERT INTO direccion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle'2,1,3);
+ERROR:  error de sintaxis en o cerca de «2»
+LÍNEA 1: ...(nombre,id_numero,id_signo,id_barrio) VALUES ('calle'2,1,3);
+                                                                 ^
+organi_guberna=# INSERT INTO direccion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle',2,1,3);
+INSERT 0 1
+organi_guberna=#
+organi_guberna=# INSERT INTO direccion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle',1,1,2);
+INSERT 0 1
+organi_guberna=# INSERT INTO direccion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle',4,1,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO direccion(nombre,id_numero,id_signo,id_barrio) VALUES ('calle',3,1,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_asociacion(nombre) VALUES ('ecologistica');
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_asociacion(nombre) VALUES ('desarrollo');
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_asociacion(nombre) VALUES ('integracion');
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_asociacion(nombre) VALUES ('cultural');
+INSERT 0 1
+organi_guberna=# INSERT INTO tipo_asociacion(nombre) VALUES ('deportiva');
+INSERT 0 1
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 10122012334-5,'cascos blancos',2,4);
+ERROR:  entero fuera de rango
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 101220123345,'cascos blancos',2,4);
+ERROR:  entero fuera de rango
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 1012,'cascos blancos',2,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 101555552,'',2,4);
+                 INSERT INTO asociacion(nit,denominacion,id_direINSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 101555552,'buena voluntad',1,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 10155521347,'ejercito de salvacion',4,1);
+ERROR:  entero fuera de rango
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 10155521,'ejercito de salvacion',4,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 50986231,'habitad para la humanidad',3,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO asociacion(nit,denominacion,id_direccion,id_tipo_asociacion) VALUES ( 50986231,'doctores sin fronteras',2,5);
+INSERT 0 1
+organi_guberna=# SELECT *FROM tipo;
+ERROR:  no existe la relación «tipo»
+LÍNEA 1: SELECT *FROM tipo;
+                      ^
+organi_guberna=# \dt
+               Listado de relaciones
+ Esquema |        Nombre        | Tipo  |  Due±o
+---------+----------------------+-------+----------
+ public  | asalariado           | tabla | postgres
+ public  | asociacion           | tabla | postgres
+ public  | barrio               | tabla | postgres
+ public  | cargo                | tabla | postgres
+ public  | direccion            | tabla | postgres
+ public  | municipio            | tabla | postgres
+ public  | numero               | tabla | postgres
+ public  | pais                 | tabla | postgres
+ public  | profesion            | tabla | postgres
+ public  | provincia            | tabla | postgres
+ public  | provincia_asociacion | tabla | postgres
+ public  | proyecto             | tabla | postgres
+ public  | signo                | tabla | postgres
+ public  | socio                | tabla | postgres
+ public  | socio_asociacion     | tabla | postgres
+ public  | tipo_asociacion      | tabla | postgres
+ public  | tipo_trabajador      | tabla | postgres
+ public  | trabajador           | tabla | postgres
+ public  | voluntario           | tabla | postgres
+ public  | zona                 | tabla | postgres
+(20 filas)
+
+
+organi_guberna=# INSERT INTO provincia_asociacion(id_provincia,id_asociacion) VALUES (2,4 );
+ERROR:  inserción o actualización en la tabla «provincia_asociacion» viola la llave foránea «provincia_asociacion_id_provincia_fkey»
+DETALLE:  La llave (id_provincia)=(2) no está presente en la tabla «provincia».
+organi_guberna=# INSERT INTO provincia(nombre,id_municipio) VALUES (huila,3 );
+ERROR:  no existe la columna «huila»
+LÍNEA 1: ...NSERT INTO provincia(nombre,id_municipio) VALUES (huila,3 );
+                                                              ^
+organi_guberna=# INSERT INTO provincia(nombre,id_municipio) VALUES ('huila',3 );
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia(nombre,id_municipio) VALUES ('tolima',3 );
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia(nombre,id_municipio) VALUES ('antioquia',3 );
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia(nombre,id_municipio) VALUES ('caqueta',4 );
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia(nombre,id_municipio) VALUES ('caldas',2 );
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia_provincia(id_provincia,id_asociacion) VALUES (2,4);
+ERROR:  no existe la relación «provincia_provincia»
+LÍNEA 1: INSERT INTO provincia_provincia(id_provincia,id_asociacion) ...
+                     ^
+organi_guberna=# INSERT INTO provincia_asociacion(id_provincia,id_asociacion) VALUES (2,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia_asociacion(id_provincia,id_asociacion) VALUES (3,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia_asociacion(id_provincia,id_asociacion) VALUES (2,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO provincia_asociacion(id_provincia,id_asociacion) VALUES (4,2);
+INSERT 0 1
+organi_guberna=# SELECT *FROM asociacion;
+ id_asociacion |    nit    |       denominacion        | id_direccion | id_tipo_asociacion
+---------------+-----------+---------------------------+--------------+--------------------
+             1 |      1012 | cascos blancos            |            2 |                  4
+             2 | 101555552 | buena voluntad            |            1 |                  3
+             3 |  10155521 | ejercito de salvacion     |            4 |                  1
+             4 |  50986231 | habitad para la humanidad |            3 |                  3
+             5 |  50986231 | doctores sin fronteras    |            2 |                  5
+(5 filas)
+
+
+organi_guberna=# INSERT INTO socio(identificacion,nombre,fech_alt_asocia,cuota_mensual,aporte_anual,id_provincia,id_direccion) VALUES (10000432,'emerson triviño','11-3-2023',3800,5000000,3,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO socio(identificacion,nombre,fech_alt_asocia,cuota_mensual,aporte_anual,id_provincia,id_direccion) VALUES (114573522,'martin ortiz','30-4-2023',4000,3799000,1,2);
+INSERT 0 1
+organi_guberna=# INSERT INTO socio(identificacion,nombre,fech_alt_asocia,cuota_mensual,aporte_anual,id_provincia,id_direccion) VALUES (114573522,'martin ortiz','30-4-2023',333333,999999,2,3);
+INSERT 0 1
+organi_guberna=# DROP TABLE socio;
+ERROR:  no se puede eliminar tabla socio porque otros objetos dependen de él
+DETALLE:  restricción «socio_asociacion_id_socio_fkey» en tabla socio_asociacion depende de tabla socio
+SUGERENCIA:  Use DROP ... CASCADE para eliminar además los objetos dependientes.
+organi_guberna=# INSERT INTO socio(identificacion,nombre,fech_alt_asocia,cuota_mensual,aporte_anual,id_provincia,id_direccion) VALUES (100035332,'yeferson gutierrez','25-6-2022',2000,200000,4,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO socio_asociacion(id_provincia,id_asociacion) VALUES (3,1);
+ERROR:  no existe la columna «id_provincia» en la relación «socio_asociacion»
+LÍNEA 1: INSERT INTO socio_asociacion(id_provincia,id_asociacion) VAL...
+                                      ^
+organi_guberna=# INSERT INTO socio_asociacon(id_asociacion,(id_socio) VALUES (3,1);
+organi_guberna(#
+organi_guberna(# );
+ERROR:  error de sintaxis en o cerca de «(»
+LÍNEA 1: INSERT INTO socio_asociacon(id_asociacion,(id_socio) VALUES ...
+                                                   ^
+organi_guberna=# INSERT INTO socio_asociacon(id_asociacion,id_socio) VALUES (3,1);
+ERROR:  no existe la relación «socio_asociacon»
+LÍNEA 1: INSERT INTO socio_asociacon(id_asociacion,id_socio) VALUES (...
+                     ^
+organi_guberna=# \dt
+               Listado de relaciones
+ Esquema |        Nombre        | Tipo  |  Due±o
+---------+----------------------+-------+----------
+ public  | asalariado           | tabla | postgres
+ public  | asociacion           | tabla | postgres
+ public  | barrio               | tabla | postgres
+ public  | cargo                | tabla | postgres
+ public  | direccion            | tabla | postgres
+ public  | municipio            | tabla | postgres
+ public  | numero               | tabla | postgres
+ public  | pais                 | tabla | postgres
+ public  | profesion            | tabla | postgres
+ public  | provincia            | tabla | postgres
+ public  | provincia_asociacion | tabla | postgres
+ public  | proyecto             | tabla | postgres
+ public  | signo                | tabla | postgres
+ public  | socio                | tabla | postgres
+ public  | socio_asociacion     | tabla | postgres
+ public  | tipo_asociacion      | tabla | postgres
+ public  | tipo_trabajador      | tabla | postgres
+ public  | trabajador           | tabla | postgres
+ public  | voluntario           | tabla | postgres
+ public  | zona                 | tabla | postgres
+(20 filas)
+
+
+organi_guberna=# SELECT *FROM socio_asociacion;
+ id_asociacion | id_socio
+---------------+----------
+(0 filas)
+
+
+organi_guberna=# INSERT INTO socio_asociacion (id_asociacion,id_socio) VALUES (3,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO socio_asociacion (id_asociacion,id_socio) VALUES (1,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO socio_asociacion (id_asociacion,id_socio) VALUES (2,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO socio_asociacion (id_asociacion,id_socio) VALUES (4,2);
+INSERT 0 1
+organi_guberna=# INSERT INTO proyecto (identificacion,objetivo,num_beneficiarios,id_zona,id_asociacion,subproyecto,id_pais) VALUES(0001,'ayudar a las personas mas necesitadas',40,3,1,1,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO proyecto (identificacion,objetivo,num_beneficiarios,id_zona,id_asociacion,subproyecto,id_pais) VALUES(00490,'contribuir con el medio ambiente',100,2,2,1,4);
+INSERT 0 1
+organi_guberna=# SELECT *FROM pais;
+ id | nombre
+----+--------
+(0 filas)
+
+
+organi_guberna=# INSERT INTO pais (nombre) VALUES(colombia);
+ERROR:  no existe la columna «colombia»
+LÍNEA 1: INSERT INTO pais (nombre) VALUES(colombia);
+                                          ^
+organi_guberna=# INSERT INTO pais (nombre) VALUES('colombia');
+INSERT 0 1
+organi_guberna=# INSERT INTO pais (nombre) VALUES('brasil');
+INSERT 0 1
+organi_guberna=# INSERT INTO pais (nombre) VALUES('peru');
+INSERT 0 1
+organi_guberna=# INSERT INTO zona (nombre) VALUES('region andina');
+INSERT 0 1
+organi_guberna=# INSERT INTO zona (nombre) VALUES('region caribe');
+INSERT 0 1
+organi_guberna=# INSERT INTO zona (nombre) VALUES('region orinoquia');
+INSERT 0 1
+organi_guberna=# INSERT INTO zona (nombre) VALUES('region pacifica');
+INSERT 0 1
+organi_guberna=# SEELCT *FROM proyecto;
+ERROR:  error de sintaxis en o cerca de «SEELCT»
+LÍNEA 1: SEELCT *FROM proyecto;
+         ^
+organi_guberna=# SELECT *FROM proyecto;
+ id | identificacion |               objetivo                | num_beneficiarios | id_zona | id_asociacion | subproyecto | id_pais
+----+----------------+---------------------------------------+-------------------+---------+---------------+-------------+---------
+  1 |              1 | ayudar a las personas mas necesitadas |                40 |       3 |             1 |           1 |       3
+  2 |            490 | contribuir con el medio ambiente      |               100 |       2 |             2 |           1 |       4
+(2 filas)
+
+
+organi_guberna=# SELECT *FROM asociacion;
+ id_asociacion |    nit    |       denominacion        | id_direccion | id_tipo_asociacion
+---------------+-----------+---------------------------+--------------+--------------------
+             1 |      1012 | cascos blancos            |            2 |                  4
+             2 | 101555552 | buena voluntad            |            1 |                  3
+             3 |  10155521 | ejercito de salvacion     |            4 |                  1
+             4 |  50986231 | habitad para la humanidad |            3 |                  3
+             5 |  50986231 | doctores sin fronteras    |            2 |                  5
+(5 filas)
+
+
+organi_guberna=# INSERT INTO trabajador (nombre) VALUES('region pINSERT INTO trabajador (identificacion,nombre,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES();                  bre,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES('region pacifica');
+ERROR:  error de sintaxis en o cerca de «)»
+LÍNEA 1: ...re,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES();
+                                                                      ^
+organi_guberna=# INSERT INTO trabajador (identificacion,nombre,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES(4367434,'pablo sanchez','15-06-2020',3,1);
+INSERT 0 1
+organi_guberna=# INSERT INTO trabajador (identificacion,nombre,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES(4367434,'helena trujillo','25-09-2021',2,4);
+INSERT 0 1
+organi_guberna=# INSERT INTO trabajador (identificacion,nombre,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES(5593373,'isidro serrato','7-10-2022',4,3);
+INSERT 0 1
+organi_guberna=# INSERT INTO trabajador (identificacion,nombre,fecha_ingreso,id_tipo_trabajador,id_asociacion) VALUES(777778243,'cristian perdomo','20-03-2019',2,1);
+INSERT 0 1
+organi_guberna=# SELECT trabajador.nombre, trabajador.fecha_ingreso,tipo_trabajador.id_tipo_trabajador
+organi_guberna-# FROM trabajador
+organi_guberna-# JOIN tipo_trabajador ON trabajador.id_tipo_trabajador = tipo_trabajador.id_tipo_trabajador
+organi_guberna-# ;
+      nombre      | fecha_ingreso | id_tipo_trabajador
+------------------+---------------+--------------------
+ cristian perdomo | 2019-03-20    |                  2
+ helena trujillo  | 2021-09-25    |                  2
+ pablo sanchez    | 2020-06-15    |                  3
+ isidro serrato   | 2022-10-07    |                  4
+(4 filas)
+
+
+organi_guberna=# SELECT trabajador.nombre, trabajador.fecha_ingreso,tipo_trabajador.id_tipo_trabajador
+organi_guberna-# FROM trabajador
+organi_guberna-# JOIN tipo_trabajador ON trabajador.id_tipo_trabajador = tipo_trabajador.id_tipo_trabajador
+organi_guberna-# WHERE id_tipo_trabajador = 'voluntario'
+organi_guberna-# ;
+ERROR:  la referencia a la columna «id_tipo_trabajador» es ambigua
+LÍNEA 4: WHERE id_tipo_trabajador = 'voluntario'
